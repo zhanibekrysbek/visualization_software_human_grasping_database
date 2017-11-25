@@ -1,15 +1,16 @@
 # visualization_software_human_grasping_database
 
 
+
 Vizualization software for Nazarbayev University Human Grasping Database project
 
 This software was created as part of Nazarbayev University Human Grasping Database project
 to visualize three channels concurrently. Particularly, it allows users to access frame by frame
 Kinematic, RGB and Depth streams.
 
-==================================================================================================
-	STRUCTURE of SOFTWARE
-==================================================================================================
+________________________________________________________________________________________________________________________________________
+STRUCTURE of SOFTWARE
+
 
 	This is a single window software with additional helper functions ("pseudoColorDepthImage.m", 
 	"skeletonViewer.m").
@@ -55,9 +56,7 @@ Kinematic, RGB and Depth streams.
 	frame by frame. For more information please refer to "skeletonViewer.m" and "loadXsens" callback
 	function of "hgd_nu_visual.m". 
 	
-==================================================================================================
-	HOW TO USE
-==================================================================================================
+________________________________________________________________________________________________________________________________________	HOW TO USE
 	
 	1) Run "hgd_nu_visual.fig"/"hgd_nu_visual.m"
 	2) Specify input files:
@@ -67,10 +66,8 @@ Kinematic, RGB and Depth streams.
 	4) Check that it plays.
 	
 	Note: due to the large files the performance might be slow. 	
-	
-===================================================================================================
-END
-===================================================================================================
+________________________________________________________________________________________________________________________________________
+
 (c) Zhanibek Rysbek
     PhD Student
     Department of Electrical and Computer Engineering 
