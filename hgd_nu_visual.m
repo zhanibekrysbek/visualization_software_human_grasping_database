@@ -10,7 +10,7 @@ function varargout = hgd_nu_visual(varargin)
 %
 % Edit the above text to modify the response to help hgd_nu_visual
 
-% Last Modified by GUIDE v2.5 22-Nov-2017 20:15:42
+% Last Modified by GUIDE v2.5 04-Feb-2018 14:52:20
 % Begin initialization code - DO NOT EDIT
 gui_Singleton = 1;
 gui_State = struct('gui_Name',       mfilename, ...
@@ -44,7 +44,7 @@ handles.output = hObject;
 % initialize global variables
 handles.videoFileNameGopro = 0;
 handles.posGopro = 1;
-handles.posXsense = 1;
+handles.posXsens = 1;
 handles.posDepth = 1;
 set(handles.figure1, 'Name', 'NU Human Grasping Database visual');
 % Update handles structure
@@ -75,11 +75,11 @@ function slider1_Callback(hObject, eventdata, handles)
 %        get(hObject,'Min') and get(hObject,'Max') to determine range of slider
 
 r = get(hObject,'Value');
-handles.posXsens = round(r*size(handles.segment_pos,1));
+handles.posXsens = round(r*size(handles.segment_pos,3));
 if handles.posXsens == 0
     handles.posXsens = 1;
 end
-showXsensFrame(handle, handles.posXsens);
+showXsensFrame(handles, handles.posXsens);
 guidata(hObject, handles);
 
 
@@ -212,7 +212,7 @@ function playPauseXsens_Callback(hObject, eventdata, handles)
 % if it runs out all frames in the video file then go back to initiale
 % state and pause.
 if get(handles.slider1, 'Value') == 1 && get(hObject, 'Value')
-    handles.posXsense = 1;
+    handles.posXsens = 1;
     set(handles.slider1,'Value', 0);
 end
 % update the name of button depending on toggle state
@@ -223,13 +223,13 @@ else
 end
 % run the loop for showing images until toggle state changes to "pause" or
 % until the end of video file
-while get(hObject, 'Value') && handles.posXsense < size(handles.segment_pos,3);
+while get(hObject, 'Value') && handles.posXsens < size(handles.segment_pos,3);
     % increment the frame number and show that frame
     handles.posXsens = handles.posXsens + 1;
     showXsensFrame(handles, handles.posXsens);
-    pause(0.01);
+    pause(0.1);
    % if we are at the end of video file bring toggle state to false
-    if handles.posXsense == size(handles.segment_pos,3) 
+    if handles.posXsens == size(handles.segment_pos,3) 
         set(hObject,'String', 'Play', 'Value', false);
     end
 end
@@ -246,7 +246,7 @@ function takeFrameXsens_Callback(hObject, ~, handles)
 % check that we can go back safely
 if handles.posXsens - 1 >=1
     % update current frame index and show the image
-    handles.posXsense = handles.posXsens - 1;
+    handles.posXsens = handles.posXsens - 1;
     showXsensFrame(handles, handles.posXsens);
 end
 guidata(hObject, handles);
@@ -290,8 +290,8 @@ function jumpXsens_Callback(hObject, eventdata, handles)
 
 % read and convert to number of desired frame number
 k = str2double(get(hObject,'String'));
-if k >= 1 && k <= size(handles.A,1)
-    handles.posXsense = k;
+if k >= 1 && k <= size(handles.segment_pos,3)
+    handles.posXsens = k;
     showXsensFrame(handles, handles.posXsens);
 else
     msgbox('You entered invalid number', 'Wrong Input','warn','modal');   
@@ -420,7 +420,7 @@ end
 while get(hObject,'Value') && handles.posDepth < handles.vidDepth.NumberOfFrames
     handles.posDepth = handles.posDepth + 1;
     showDepthFrame(handles, handles.posDepth);
-    pause(0.001);
+    pause(0.1);
     if handles.posDepth == handles.vidDepth.NumberOfFrames 
         set(hObject,'String', 'Play', 'Value', false);
     end
@@ -532,7 +532,7 @@ while get(hObject,'Value') && handles.posGopro < handles.vidGopro.NumberOfFrames
     % increment the frame number and show that frame
     handles.posGopro = handles.posGopro + 1;
     showGoproFrame(handles, handles.posGopro);
-    pause(0.001);
+    pause(0.1);
    % if we are at the end of video file bring toggle state to false
     if handles.posGopro == handles.vidGopro.NumberOfFrames 
         set(hObject,'String', 'Play', 'Value', false);
@@ -693,6 +693,7 @@ while get(hObject,'Value')
         handles.posXsens = handles.posXsens + 1;
         showXsensFrame(handles, handles.posXsens);
         count = count + 1;
+        pause(0.1);
     end
     if gcheck && handles.posGopro <= handles.vidGopro.NumberOfFrames
         % increment the frame number and show that frame
@@ -704,16 +705,14 @@ while get(hObject,'Value')
         handles.posDepth = handles.posDepth + 1;
         showDepthFrame(handles, handles.posDepth);
     end
-    pause(0.001);
    % if we are at the end of video file bring toggle state to false
     if handles.posGopro == handles.vidGopro.NumberOfFrames 
         set(hObject,'String', 'Play', 'Value', false);
     end
+    pause(0.1);
 end
 % Hint: get(hObject,'Value') returns toggle state of playPauseGopro
 guidata(hObject, handles);
-
-
 
 
 
@@ -763,7 +762,7 @@ function addFrameAll_Callback(hObject, eventdata, handles)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 xcheck = get(handles.xsensCheckAll, 'value');
-if xcheck == 1 && handles.posXsens + 4 > size(handles.segment_pos,3)
+if xcheck == 1 && handles.posXsens + 4 < size(handles.segment_pos,3)
     handles.posXsens = handles.posXsens + 4;
     showXsensFrame(handles, handles.posXsens);
 elseif handles.posXsens + 4 < size(handles.segment_pos,3)
@@ -772,7 +771,7 @@ elseif handles.posXsens + 4 < size(handles.segment_pos,3)
 end
 % gopro
 gcheck = get(handles.goproCheckAll, 'value');
-if gcheck == 1 && handles.posGopro + 1 > handles.vidGopro.NumberOfFrames
+if gcheck == 1 && handles.posGopro + 1 < handles.vidGopro.NumberOfFrames
     handles.posGopro = handles.posGopro + 1;
     showGoproFrame(handles, handles.posGopro);
 elseif handles.posGopro + 1 < handles.vidGopro.NumberOfFrames
@@ -781,7 +780,7 @@ elseif handles.posGopro + 1 < handles.vidGopro.NumberOfFrames
 end
 % depth
 dcheck = get(handles.depthCheckAll, 'value');
-if dcheck == 1 && handles.posDepth + 1 > handles.vidDepth.NumberOfFrames
+if dcheck == 1 && handles.posDepth + 1 < handles.vidDepth.NumberOfFrames
     handles.posDepth = handles.posDepth + 1;
     showDepthFrame(handles, handles.posDepth);
 elseif  handles.posDepth + 1 < handles.vidDepth.NumberOfFrames
@@ -822,9 +821,9 @@ guidata(hObject, handles);
 
 
 
-% --- Executes on button press in backForwardAll.
-function backForwardAll_Callback(hObject, eventdata, handles)
-% hObject    handle to backForwardAll (see GCBO)
+% --- Executes on button press in fastBackwardAll.
+function fastBackwardAll_Callback(hObject, eventdata, handles)
+% hObject    handle to fastBackwardAll (see GCBO)
 % eventdata  reserved - to be defined in a future version of MATLAB
 % handles    structure with handles and user data (see GUIDATA)
 % depending on selected choice of concurrent channels we activate stop functionality 
@@ -868,7 +867,7 @@ function fastForwardAll_Callback(hObject, eventdata, handles)
 % 15 is taken as standard value for the amount of frames to go back/forward
 % xsens
 xcheck = get(handles.xsensCheckAll, 'value');
-if xcheck == 1 && handles.posXsens + 4*15 >= size(handles.segment_pos,3)
+if xcheck == 1 && handles.posXsens + 4*15 <= size(handles.segment_pos,3)
     handles.posXsens = handles.posXsens + 4*15;
     showXsensFrame(handles, handles.posXsens);
 elseif handles.posXsens + 4*15 < size(handles.segment_pos,3)
@@ -877,7 +876,7 @@ elseif handles.posXsens + 4*15 < size(handles.segment_pos,3)
 end
 % gopro
 gcheck = get(handles.goproCheckAll, 'value');
-if gcheck == 1 && handles.posGopro + 15 >= handles.vidGopro.NumberOfFrames
+if gcheck == 1 && handles.posGopro + 15 <= handles.vidGopro.NumberOfFrames
     handles.posGopro = handles.posGopro + 15;
     showGoproFrame(handles, handles.posGopro);
 elseif handles.posGopro + 15 < handles.vidGopro.NumberOfFrames
@@ -886,7 +885,7 @@ elseif handles.posGopro + 15 < handles.vidGopro.NumberOfFrames
 end
 % depth
 dcheck = get(handles.depthCheckAll, 'value');
-if dcheck == 1 && handles.posDepth + 15 >= handles.vidDepth.NumberOfFrames
+if dcheck == 1 && handles.posDepth + 15 <= handles.vidDepth.NumberOfFrames
     handles.posDepth = handles.posDepth + 15;
     showDepthFrame(handles, handles.posDepth);
 elseif  handles.posDepth + 15 < handles.vidDepth.NumberOfFrames

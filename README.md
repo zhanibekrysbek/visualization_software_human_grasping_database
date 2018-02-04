@@ -56,7 +56,8 @@ STRUCTURE of SOFTWARE
 	frame by frame. For more information please refer to "skeletonViewer.m" and "loadXsens" callback
 	function of "hgd_nu_visual.m". 
 	
-________________________________________________________________________________________________________________________________________	HOW TO USE
+________________________________________________________________________________________________________________________________________	
+HOW TO USE
 	
 	1) Run "hgd_nu_visual.fig"/"hgd_nu_visual.m"
 	2) Specify input files:
@@ -64,8 +65,17 @@ ________________________________________________________________________________
 		OR click "Browse" button and find target file.
 	3) Click "Load". It may take a moment to load. An image should appear at corresponding axes once loaded.
 	4) Check that it plays.
+	5) To find frames at Xsens, Gopro and Depth channels corresponding to the same instant of time choose frame numbers in the following way:
 	
-	Note: due to the large files the performance might be slow. 	
+	Get gopro frames of grasp X from the provided annotation file: 
+	
+		Gopro Frame = "StartFrame" column of Grasp X;
+		Depth Frame = "depthStart" column of Grasp X;
+		Xsens Frame = Gopro Frame * 4;
+		
+	Note: 
+	- make sure that your loaded video file consists that particular grasp (Grasp X)
+	- due to the large files the performance might be slow. 	
 ________________________________________________________________________________________________________________________________________
 
 (c) Zhanibek Rysbek
