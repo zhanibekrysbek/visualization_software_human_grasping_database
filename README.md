@@ -8,7 +8,7 @@ This software was created as part of Nazarbayev University Human Grasping Databa
 to visualize three channels concurrently. Particularly, it allows users to access frame by frame
 Kinematic, RGB and Depth streams.
 
-________________________________________________________________________________________________________________________________________
+===========================================================================
 STRUCTURE of SOFTWARE
 
 
@@ -56,7 +56,7 @@ STRUCTURE of SOFTWARE
 	frame by frame. For more information please refer to "skeletonViewer.m" and "loadXsens" callback
 	function of "hgd_nu_visual.m". 
 	
-________________________________________________________________________________________________________________________________________	
+=====================================================================	
 HOW TO USE
 	
 	1) Run "hgd_nu_visual.fig"/"hgd_nu_visual.m"
@@ -76,7 +76,7 @@ HOW TO USE
 	Note: 
 	- make sure that your loaded video file consists that particular grasp (Grasp X)
 	- due to the large files the performance might be slow. 	
-________________________________________________________________________________________________________________________________________
+=====================================================================
 
 (c) Zhanibek Rysbek
     PhD Student
