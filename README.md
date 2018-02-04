@@ -56,7 +56,8 @@ STRUCTURE of SOFTWARE
 	frame by frame. For more information please refer to "skeletonViewer.m" and "loadXsens" callback
 	function of "hgd_nu_visual.m". 
 	
-=====================================================================	
+====================================================================
+
 HOW TO USE
 	
 	1) Run "hgd_nu_visual.fig"/"hgd_nu_visual.m"
